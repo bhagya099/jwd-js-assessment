@@ -19,6 +19,11 @@
       5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
 *************************** */
 
+// grabing the html element
+const submitButton = document.querySelector('#btnSubmit');
+const resetButton = document.querySelector('#btnReset');
+const scoreButton = document.querySelector('#score');
+const quizWrap = document.querySelector('#quizWrap');
 window.addEventListener('DOMContentLoaded', () => {
     const start = document.querySelector('#start');
     start.addEventListener('click', function(e) {
@@ -28,6 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // quizArray QUESTIONS & ANSWERS
     // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
     // Basic ideas from https://code-boxx.com/simple-javascript-quiz/
+
     const quizArray = [{
             q: 'Which is the third planet from the sun?',
             o: ['Saturn', 'Earth', 'Pluto', 'Mars'],
@@ -44,28 +50,29 @@ window.addEventListener('DOMContentLoaded', () => {
             a: 1,
         },
         {
-            q: ' Which is the largest planet in the solar system?',
-            o: ['Jupiter', 'Earth', 'Mars', 'Neptune'],
-            a: 1,
-        },
-        {
             q: 'Which one of these is a JavaScript package manager?',
             o: ['Angular', 'Node.js', 'npm', 'Typescript'],
             a: 2,
         },
+        {
+            q: ' Which is the largest planet in the solar system?',
+            o: ['Jupiter', 'Earth', 'Mars', 'Neptune'],
+            a: 0,
+        },
+
     ];
 
     // function to Display the quiz questions and answers from the object
     const displayQuiz = () => {
-        const quizWrap = document.querySelector('#quizWrap');
+
         let quizDisplay = '';
         quizArray.map((quizItem, index) => {
             quizDisplay += `<ul class="list-group">
                    Q - ${quizItem.q}
-                    <li class="list-group-item mt-2" id="li_${index}_0"><input type="radio" name="radio${index}" id="radio_${index}_0"> ${quizItem.o[0]}</li>
-                    <li class="list-group-item" id="li_${index}_1"><input type="radio" name="radio${index}" id="radio_${index}_1"> ${quizItem.o[1]}</li>
-                    <li class="list-group-item"  id="li_${index}_2"><input type="radio" name="radio${index}" id="radio_${index}_2"> ${quizItem.o[2]}</li>
-                    <li class="list-group-item"  id="li_${index}_3"><input type="radio" name="radio${index}" id="radio_${index}_3"> ${quizItem.o[3]}</li>
+                    <li class="list-group-item mt-2" id="li_${index}_0"><input type="radio" name="radio${index}" id="radio_${index}_0" value=0> ${quizItem.o[0]}</li>
+                    <li class="list-group-item" id="li_${index}_1"><input type="radio" name="radio${index}" id="radio_${index}_1" value =1> ${quizItem.o[1]}</li>
+                    <li class="list-group-item"  id="li_${index}_2"><input type="radio" name="radio${index}" id="radio_${index}_2 value=2" > ${quizItem.o[2]}</li>
+                    <li class="list-group-item"  id="li_${index}_3" ><input type="radio" name="radio${index}" id="radio_${index}_3" value=3> ${quizItem.o[3]}</li>
                     </ul>
                     <div>&nbsp;</div>`;
             quizWrap.innerHTML = quizDisplay;
@@ -76,24 +83,44 @@ window.addEventListener('DOMContentLoaded', () => {
     const calculateScore = () => {
         let score = 0;
         quizArray.map((quizItem, index) => {
+
             for (let i = 0; i < 4; i++) {
                 //highlight the li if it is the correct answer
                 let li = `li_${index}_${i}`;
                 let r = `radio_${index}_${i}`;
+                //  li is id for list item in every option
+                // console.log(li);
+                // // r is id for input
+                console.log(r);
                 liElement = document.querySelector('#' + li);
                 radioElement = document.querySelector('#' + r);
+                // console.log(radioElement);
+                // console.log(liElement);
 
                 if (quizItem.a == i) {
                     //change background color of li element here
+                    liElement.style.backgroundColor = 'green';
                 }
-
-                if (radioElement.checked) {
+                if (r.checked) {
                     // code for task 1 goes here
-                }
+                    score++
+                };
+                scoreButton.innerHTML = `Your score is : ${score}`;
             }
         });
     };
 
     // call the displayQuiz function
     displayQuiz();
+
+    // calling the score function
+    submitButton.addEventListener('click', calculateScore);
+    // resert the quiz
+    resetButton.addEventListener('click', () => {
+        displayQuiz();
+        console.log("hello");
+        scoreButton.innerHTML = "";
+        document.querySelector('#quizBlock').style.display = 'none';
+        start.style.display = 'block';
+    });
 });
