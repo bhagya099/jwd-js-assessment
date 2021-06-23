@@ -29,20 +29,20 @@ window.addEventListener('DOMContentLoaded', () => {
     start.addEventListener('click', function(e) {
         document.querySelector('#quizBlock').style.display = 'block';
         start.style.display = 'none';
-        let time = document.querySelector('#time');
-        var count = 60;
-        var timer = setInterval(function() {
-            time.innerHTML = count;
-            count--;
-            if (count === 0) {
-                stopInterval();
-            }
-        }, 1000);
-
-        var stopInterval = function() {
-            alert('Time is up!');
-            clearInterval(timer);
-            reset();
+        // calling the time function
+        timer();
+        // declaring the time function
+        function timer() {
+            var sec = 60;
+            var timer = setInterval(function() {
+                document.getElementById('time').innerHTML = '00:' + sec + ' left';
+                sec--;
+                if (sec < 0) {
+                    clearInterval(timer);
+                    alert("Time out!! :(")
+                    reset();
+                }
+            }, 1000);
         }
     });
     // quizArray QUESTIONS & ANSWERS
@@ -121,10 +121,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     liElement.style.backgroundColor = 'green';
 
                 }
-                console.log(r.checked);
                 if (radioElement.checked) {
                     // code for task 1 goes here
-                    liElement.style.backgroundColor = 'green';
                     console.log("hello");
                     score++;
                 }
