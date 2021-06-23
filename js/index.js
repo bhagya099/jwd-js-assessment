@@ -24,6 +24,33 @@ const submitButton = document.querySelector('#btnSubmit');
 const resetButton = document.querySelector('#btnReset');
 const scoreButton = document.querySelector('#score');
 const quizWrap = document.querySelector('#quizWrap');
+const quizArray = [{
+        q: 'Which is the third planet from the sun?',
+        o: ['Saturn', 'Earth', 'Pluto', 'Mars'],
+        a: 1, // array index 1 - so Earth is the correct answer here
+    },
+    {
+        q: 'Which is the largest ocean on Earth?',
+        o: ['Atlantic Ocean', 'Indian Ocean', 'Arctic Ocean', 'Pacific Ocean'],
+        a: 3,
+    },
+    {
+        q: 'What is the capital of Australia',
+        o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
+        a: 1,
+    },
+    {
+        q: 'Which one of these is a JavaScript package manager?',
+        o: ['Angular', 'Node.js', 'npm', 'Typescript'],
+        a: 2,
+    },
+    {
+        q: ' Which is the largest planet in the solar system?',
+        o: ['Jupiter', 'Earth', 'Mars', 'Neptune'],
+        a: 0,
+    },
+
+];
 window.addEventListener('DOMContentLoaded', () => {
     const start = document.querySelector('#start');
     start.addEventListener('click', function(e) {
@@ -45,37 +72,12 @@ window.addEventListener('DOMContentLoaded', () => {
             }, 1000);
         }
     });
+
     // quizArray QUESTIONS & ANSWERS
     // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
     // Basic ideas from https://code-boxx.com/simple-javascript-quiz/
 
-    const quizArray = [{
-            q: 'Which is the third planet from the sun?',
-            o: ['Saturn', 'Earth', 'Pluto', 'Mars'],
-            a: 1, // array index 1 - so Earth is the correct answer here
-        },
-        {
-            q: 'Which is the largest ocean on Earth?',
-            o: ['Atlantic Ocean', 'Indian Ocean', 'Arctic Ocean', 'Pacific Ocean'],
-            a: 3,
-        },
-        {
-            q: 'What is the capital of Australia',
-            o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
-            a: 1,
-        },
-        {
-            q: 'Which one of these is a JavaScript package manager?',
-            o: ['Angular', 'Node.js', 'npm', 'Typescript'],
-            a: 2,
-        },
-        {
-            q: ' Which is the largest planet in the solar system?',
-            o: ['Jupiter', 'Earth', 'Mars', 'Neptune'],
-            a: 0,
-        },
 
-    ];
 
     // function to Display the quiz questions and answers from the object
     const displayQuiz = () => {
@@ -92,46 +94,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     <div>&nbsp;</div>`;
             quizWrap.innerHTML = quizDisplay;
         });
-        // for time count down
-
     };
-
-    // Calculate the score
-    const calculateScore = () => {
-        console.log("hello");
-
-        let score = 0;
-        quizArray.map((quizItem, index) => {
-
-            for (let i = 0; i < 4; i++) {
-                //highlight the li if it is the correct answer
-                let li = `li_${index}_${i}`;
-                let r = `radio_${index}_${i}`;
-                //  li is id for list item in every option
-                // console.log(li);
-                // // r is id for input
-                console.log(r);
-                liElement = document.querySelector('#' + li);
-                radioElement = document.querySelector('#' + r);
-
-                // console.log(liElement);
-                //  console.log(radioElement);
-                if (quizItem.a == i) {
-                    //change background color of li element here
-                    liElement.style.backgroundColor = 'green';
-
-                }
-                if (radioElement.checked) {
-                    // code for task 1 goes here
-                    console.log("hello");
-                    score++;
-                }
-            }
-            scoreButton.innerHTML = `Your score is : ${score}`;
-        });
-    };
-
-
     // call the displayQuiz function
     displayQuiz();
     // for reset
@@ -147,3 +110,28 @@ window.addEventListener('DOMContentLoaded', () => {
     // resert the quiz
     resetButton.addEventListener('click', reset);
 });
+
+// Calculate the score
+const calculateScore = () => {
+    console.log("hello");
+    let score = 0;
+    quizArray.map((quizItem, index) => {
+        for (let i = 0; i < 4; i++) {
+            //highlight the li if it is the correct answer
+            let li = `li_${index}_${i}`;
+            let r = `radio_${index}_${i}`;
+            liElement = document.querySelector('#' + li);
+            radioElement = document.querySelector('#' + r);
+            if (quizItem.a == i) {
+                //change background color of li element here
+                liElement.style.backgroundColor = 'green';
+                if (radioElement.checked) {
+                    // code for task 1 goes here
+                    console.log("hello");
+                    score++;
+                }
+            }
+        }
+        scoreButton.innerHTML = `Your score is : ${score}`;
+    });
+};
