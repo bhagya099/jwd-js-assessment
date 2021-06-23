@@ -29,6 +29,21 @@ window.addEventListener('DOMContentLoaded', () => {
     start.addEventListener('click', function(e) {
         document.querySelector('#quizBlock').style.display = 'block';
         start.style.display = 'none';
+        let time = document.querySelector('#time');
+        var count = 60;
+        var timer = setInterval(function() {
+            time.innerHTML = count;
+            count--;
+            if (count === 0) {
+                stopInterval();
+            }
+        }, 1000);
+
+        var stopInterval = function() {
+            alert('Time is up!');
+            clearInterval(timer);
+            reset();
+        }
     });
     // quizArray QUESTIONS & ANSWERS
     // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
@@ -69,18 +84,22 @@ window.addEventListener('DOMContentLoaded', () => {
         quizArray.map((quizItem, index) => {
             quizDisplay += `<ul class="list-group">
                    Q - ${quizItem.q}
-                    <li class="list-group-item mt-2" id="li_${index}_0"><input type="radio" name="radio${index}" id="radio_${index}_0" value=0> ${quizItem.o[0]}</li>
+                    <li class="list-group-item mt-2" id="li_${index}_0"><input type="radio" name="radio${index}" id="radio_${index}_0"  value=0> ${quizItem.o[0]}</li>
                     <li class="list-group-item" id="li_${index}_1"><input type="radio" name="radio${index}" id="radio_${index}_1" value =1> ${quizItem.o[1]}</li>
-                    <li class="list-group-item"  id="li_${index}_2"><input type="radio" name="radio${index}" id="radio_${index}_2 value=2" > ${quizItem.o[2]}</li>
-                    <li class="list-group-item"  id="li_${index}_3" ><input type="radio" name="radio${index}" id="radio_${index}_3" value=3> ${quizItem.o[3]}</li>
+                    <li class="list-group-item"  id="li_${index}_2"><input type="radio" name="radio${index}" id="radio_${index}_2" value=2> ${quizItem.o[2]}</li>
+                    <li class="list-group-item"  id="li_${index}_3" ><input type="radio" name="radio${index}" id="radio_${index}_3"  value=3> ${quizItem.o[3]}</li>
                     </ul>
                     <div>&nbsp;</div>`;
             quizWrap.innerHTML = quizDisplay;
         });
+        // for time count down
+
     };
 
     // Calculate the score
     const calculateScore = () => {
+        console.log("hello");
+
         let score = 0;
         quizArray.map((quizItem, index) => {
 
@@ -94,33 +113,39 @@ window.addEventListener('DOMContentLoaded', () => {
                 console.log(r);
                 liElement = document.querySelector('#' + li);
                 radioElement = document.querySelector('#' + r);
-                // console.log(radioElement);
-                // console.log(liElement);
 
+                // console.log(liElement);
+                //  console.log(radioElement);
                 if (quizItem.a == i) {
                     //change background color of li element here
                     liElement.style.backgroundColor = 'green';
+
                 }
-                if (r.checked) {
+                console.log(r.checked);
+                if (radioElement.checked) {
                     // code for task 1 goes here
-                    score++
-                };
-                scoreButton.innerHTML = `Your score is : ${score}`;
+                    liElement.style.backgroundColor = 'green';
+                    console.log("hello");
+                    score++;
+                }
             }
+            scoreButton.innerHTML = `Your score is : ${score}`;
         });
     };
 
+
     // call the displayQuiz function
     displayQuiz();
+    // for reset
+    function reset() {
+        displayQuiz();
+        scoreButton.innerHTML = "";
+        document.querySelector('#quizBlock').style.display = 'none';
+        start.style.display = 'block';
+    }
 
     // calling the score function
     submitButton.addEventListener('click', calculateScore);
     // resert the quiz
-    resetButton.addEventListener('click', () => {
-        displayQuiz();
-        console.log("hello");
-        scoreButton.innerHTML = "";
-        document.querySelector('#quizBlock').style.display = 'none';
-        start.style.display = 'block';
-    });
+    resetButton.addEventListener('click', reset);
 });
